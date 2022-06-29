@@ -1,39 +1,20 @@
 <script>
-	let name = 'Sara';
-	let src="https://picsum.photos/200/300";
- let count = 0;
-
-    const incrementCount = () => {
-        count += 1;
-    }
-
-    const double = () => {
-        count *= 2;
-    }
-
-    $: doubled = count * 2;
-
-    $: console.log("The count is " + count);
+  import { Link } from "svelte-routing";
 </script>
 
-<h1>Hello {name.charAt(0)}!</h1>
-<img {src} alt="{name}" />
+<div class="header">
+  <h1>Quality Quotes</h1>
 
-<p>{@html count }</p>
-<p>{@html doubled } </p>
-
-
-{#if count > 10}
-    <p>Count is greater than 10</p>
-{/if}
-
-<input placeholder="number..."/>
-<button on:click={incrementCount}>count +</button>
-<button on:click={double}>double</button>
-
+  <Link id="hi" to="/">Home</Link>
+  <Link class="links" to="/quote-list">Quote List</Link>
+  <Link class="links" to="/search-quotes">Search Quotes</Link>
+</div>
 
 <style>
-	h1 {
-		color: red;
-	}
+  .header {
+    background-color: #4477ff;
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+  }
 </style>
