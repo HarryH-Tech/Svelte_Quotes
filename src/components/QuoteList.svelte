@@ -1,9 +1,10 @@
 <script>
   import axios from "axios";
   import { onMount } from "svelte";
+  import Loading from "./utils/Loading.svelte";
 
   let quotes = [];
-
+  let title = "hello";
   onMount(() => {
     axios
       .get("https://api.quotable.io/quotes")
@@ -20,6 +21,7 @@
 
 <div id="page-container">
   <h1>QUOTE LIST</h1>
+
   {#if quotes.length > 1}
     <div class="grid">
       {#each quotes as quote}
@@ -29,6 +31,8 @@
         </div>
       {/each}
     </div>
+  {:else}
+    <Loading />
   {/if}
 </div>
 
@@ -42,14 +46,10 @@
 
   #list-item-container {
     text-align: center;
-    background: linear-gradient(
-      180deg,
-      rgba(17, 255, 0, 0.582),
-      rgba(0, 85, 255, 0.626)
-    );
-    backdrop-filter: blur(10px);
-    border-radius: 0.6rem;
-    border: 5px solid rgba(255, 255, 255, 0.2);
+    border: 5px solid rgba(196, 106, 106, 0.429);
+    border-radius: 1rem !important;
+    animation: color 5s infinite linear;
+    transition: all 0.5s ease-in-out;
   }
 
   h1 {
@@ -58,5 +58,26 @@
 
   h3 {
     text-decoration: underline;
+  }
+
+  @keyframes color {
+    0% {
+      background: #33cccc;
+    }
+    20% {
+      background: #33cc36;
+    }
+    40% {
+      background: #b8cc33;
+    }
+    60% {
+      background: #fcca00;
+    }
+    80% {
+      background: #33cc36;
+    }
+    100% {
+      background: #33cccc;
+    }
   }
 </style>

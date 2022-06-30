@@ -1,27 +1,49 @@
 <script>
   import axios from "axios";
+  import Error from "./utils/Error.svelte";
+  import Loading from "./utils/Loading.svelte";
+
   let quotes = [];
   let query = "";
   let error = "";
+  let loading = false;
 
   const searchQuotes = () => {
+    if (!query) {
+      error = "Please enter a search query.";
+      return;
+    }
+    error = "";
+    loading = true;
     axios
       .get(`https://api.quotable.io/search/quotes?query=${query}`)
       .then((res) => {
         console.log(res.data);
-        quotes = res.data.results;
+        if (res.data.results.length === 0) {
+          error = "No results found.";
+          loading = false;
+        } else {
+          quotes = res.data.results;
+          loading = false;
+        }
       })
       .catch((error) => {
         console.log(error);
         error = "Sorry, we failed to get the data, please try again.";
+        loading = false;
       });
   };
 </script>
 
 <div id="search-container">
-  <input bind:value={query} type="text" id="search-input" />
+  <input
+    bind:value={query}
+    on:focus={(error = "")}
+    type="text"
+    id="search-input"
+  />
   <br />
-  <button on:click={searchQuotes}>Search</button>
+  <button id="button" on:click={searchQuotes}>Search</button>
 </div>
 
 {#if quotes.length > 0}
@@ -33,6 +55,14 @@
       </div>
     {/each}
   </div>
+{/if}
+
+{#if error}
+  <Error {error} />
+{/if}
+
+{#if loading}
+  <Loading />
 {/if}
 
 <style>
@@ -56,11 +86,34 @@
   }
 
   #search-container {
-    width: 50%;
+    width: 70%;
     margin: 2rem auto;
-    border: 4px solid black;
-    border-radius: 0.6rem;
     text-align: center;
     padding: 0.6rem;
+  }
+
+  #search-input {
+    border-radius: 1rem;
+    padding: 0.4rem;
+  }
+
+  #button {
+    background-color: #4477ff;
+    color: white;
+    border: none;
+    border-radius: 0.6rem;
+    padding: 0.6rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  #button:hover {
+    background-color: #33cccc;
+    box-shadow: 5px 5px 5px #000;
+  }
+
+  #button:active {
+    transform: translateY(8px);
   }
 </style>

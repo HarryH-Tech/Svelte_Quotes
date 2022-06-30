@@ -1,4 +1,5 @@
 <script>
+  import Loading from "./utils/Loading.svelte";
   import axios from "axios";
   import { onMount } from "svelte";
   let quote = [];
@@ -27,7 +28,7 @@
     </div>
   </div>
 {:else}
-  <p>Loading...</p>
+  <Loading />
 {/if}
 
 <style>
@@ -47,7 +48,7 @@
     );
     backdrop-filter: blur(10px);
     border-radius: 0.6rem;
-    border: 5px solid rgba(255, 255, 255, 0.2);
+    border: 5px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
     width: 70%;
     margin: auto;
